@@ -42,16 +42,19 @@ class Home extends Component {
         <div className='row'>
           <div className='col'>
             {!this.state.books.length ? 
-            (<h1 className='text-center'>No Books to Display</h1>) : (<ResultsList>
+            (<h1 className='text-center'>No Books to Display</h1>) : 
+            (<ResultsList>
               {this.state.books.map(book => {
+                let img = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'https://via.placeholder.com/150'
+                let author = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : book.volumeInfo.authors
                 return (
                   <ResultsListItem
                     key={book.volumeInfo.title}
                     title={book.volumeInfo.title}
-                    author={book.volumeInfo.authors}
+                    author={author}
                     description={book.volumeInfo.description}
                     link={book.volumeInfo.canonicalVolumeLink}
-                    img={book.volumeInfo.imageLinks}
+                    img={img}
                   />
                 );
               })}
