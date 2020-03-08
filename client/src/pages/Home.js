@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
-import Jumbotron from '../components/Jumbotron'
 import BookSearch from '../components/BookSearch'
 import {BookCard, ResultsContainer} from '../components/Results'
 import SaveBtn from '../components/SaveBtn'
+import {cardContainer, Card, cardHeader, cardTitle, cardBody} from '../components/Card'
 
 import API from '../utils/API';
 import ViewBtn from '../components/ViewBtn';
@@ -38,74 +37,80 @@ class Home extends Component {
 
   render() {
     return (
-      <Container fluid>
-        <Row>
-          <Col size='12'>
-            <Jumbotron fluid> 
-              <h1>(React) Google Books Search</h1>
-              <h3>Search for and Save Books of Interest</h3>  
-            </Jumbotron>
-          </Col>
-        </Row>
+      <div>
+        <Container fluid>
+          <Row style='justify-content-center'>
+            <Col size='lg-8'>
+              <Card>
+                <cardHeader><h5>Book Search</h5></cardHeader>
+                <cardTitle>Book</cardTitle>
+                <cardBody>
+                  <BookSearch value={this.state.bookSearch} onChange={this.handleInputChange} onClick={this.handleFormSubmit} id='book-search' />
+                </cardBody>
+              </Card>
+            </Col>
+          </Row>
 
-        <Row style='justify-content-center'>
-          <Col size='lg-8'>
-            <BookSearch value={this.state.bookSearch} onChange={this.handleInputChange} onClick={this.handleFormSubmit} id='book-search' />
-          </Col>
-        </Row>
+          <Row style='justify-content-center'>
+            <Col size='lg-8'>
+            {!this.state.books.length ? 
+              (<Card>
+                <cardHeader>
+                  <h2 className='text-center'>Search a book or author</h2>
+                </cardHeader>
+              </Card>) : 
+              (<Card>
+                <cardHeader>
+                  <h2 className='text-center'>Search Results</h2>
+                </cardHeader>
+                <cardBody>
+                  {this.state.books.map(book => {
+                    let title = book.volumeInfo.title
+                    let author = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : book.volumeInfo.authors
+                    let img = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'https://via.placeholder.com/150'
+                    let description = book.volumeInfo.description
+                    let link = book.volumeInfo.canonicalVolumeLink
+                  
+                    return (
+                      <BookCard key={title}>
+                        <cardTitle>
+                          <h3>{title}</h3>
+                          <h4> By: {author}</h4>
+                        </cardTitle>
+                        <cardBody>
+                          <Row>
+                            <Col size='md-4'>
+                              <img src={img} alt={`${title} Thumbnail`}></img>
+                            </Col>
+                            <Col size='md-8'>
+                              <ViewBtn href={link}> </ViewBtn>
 
-        <Row style='justify-content-center'>
-          <Col size='lg-8'>
-            {!this.state.books.length ? (<h1 className='text-center'>Search a book or author!</h1>) : 
-            (<ResultsContainer>
-              {this.state.books.map(book => {
-                let title = book.volumeInfo.title
-                let author = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : book.volumeInfo.authors
-                let img = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'https://via.placeholder.com/150'
-                let description = book.volumeInfo.description
-                let link = book.volumeInfo.canonicalVolumeLink
-              
-                return (
-                  <BookCard key={title}>
-                    
-                    <Row>
-                      <Col size='lg-10'>
-                        <h1 className='card-title'> {title} </h1>
-                        <h2> By: {author}</h2>
-                      </Col>
-
-                      <Col size='lg-2'>
-                        <ViewBtn href={link}> </ViewBtn>
-
-                        <SaveBtn onClick={() => this.handleBookSave( 
-                         {
-                          title: title,
-                          author: author,
-                          description: description,
-                          link: link,
-                          img: img
-                          }
-                        )}>
-                        </SaveBtn>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col size='md-2'>
-                        <img src={img} alt={`${title} Thumbnail`}></img>
-                      </Col>
-
-                      <Col size='md-10'>
-                        <p className='card-text'>{description}</p>
-                      </Col>
-                    </Row>
-                  </BookCard>
-                )
-              })}
-            </ResultsContainer>
-            )}
-          </Col>
-        </Row>
-      </Container>
+                              <SaveBtn onClick={() => this.handleBookSave( 
+                                {
+                                  title: title,
+                                  author: author,
+                                  description: description,
+                                  link: link,
+                                  img: img
+                                }
+                              )}>
+                              </SaveBtn>
+                              <p className='card-text'>{description}</p>
+                            </Col>
+                          </Row>
+                        </cardBody>
+                      </BookCard>
+                    )
+                  })}
+                  </cardBody>
+                </Card>
+              )}
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      
+      
     )
   }
 }

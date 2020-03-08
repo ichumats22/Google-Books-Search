@@ -16,9 +16,16 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res) {
-  
+    let authors = req.body.author.length ? req.body.author.split(',') : req.body.author
+    let data = {
+      title: req.body.title,
+      author: authors,
+      description: req.body.description,
+      link: req.body.link,
+      img: req.body.img
+    }
     db.Book
-      .create(req.body)
+      .create(data)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
