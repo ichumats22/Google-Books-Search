@@ -5,8 +5,11 @@ const Schema = mongoose.Schema;
 
 //Create new AuthorSchema object using the Schema constructor
 let AuthorSchema = new Schema ({
-  name: {type: String, required: true},
-  books: Schema.Types.ObjectId,
+  name: {type: String, unique: true, required: true},
+  books: {
+    type: Schema.Types.ObjectId,
+    ref: "Book"
+  },
 });
 
 //Create model form the above Schema using mongoose's model method 

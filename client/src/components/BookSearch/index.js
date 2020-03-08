@@ -4,9 +4,9 @@ import './bookSearch.css'
 // This component lets us use a bootstrap input element without worrying about class names
 // or manually wrapping the input with a form-group div
 // All of the props passed to this component are spread onto the input element
-function BookSearch({value, onChange, onClick}) {
+function BookSearch({value, onChange, onClick, id}) {
   return (
-    <div className="input-group input-group-lg">
+    <div className="input-group input-group-lg" id={id}>
       <div className='row'>
         <div className='col'>
           <h4>Book Search</h4>
