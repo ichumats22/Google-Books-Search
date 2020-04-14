@@ -8,4 +8,6 @@ A Google Books Search app created with Node, Express, MongoDB, and React.
   * Node & Express - server development, data routing
   * MongoDB & Mongoose- data storage/ queries
   * React - User interface 
+  
+ [See the Deployed Version](https://ivc-google-books-search.herokuapp.com/)
 
